@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import appLogo from './assets/gsm.png'
+import { routesConfig } from "./routes/routes";
 export default function App() {
   return (
     <div className="flex h-screen bg-light-green gap-4">
@@ -28,18 +29,26 @@ export default function App() {
 
 
 const SideNav = () => {
+  const location = useLocation().pathname
+
   return (
-    <section className="p-4 h-full flex flex-col items-center text-center gap-12 flex-[0.15] lg:flex-[0.25] md:flex-[0.2] bg-normal-green rounded-[25px] rounded-tl-none rounded-bl-none">
+    <section className="p-4 h-full flex flex-col items-center text-center gap-12 flex-[0.15] lg:flex-[0.25] md:flex-[0.2] max-w-[300px] bg-normal-green rounded-[25px] rounded-tl-none rounded-bl-none">
 
       {/* sidenav top */}
-      <div className="flex-[1]  flex flex-col justify-between w-full">
-        <div className="flex flex-col items-center ">
+      <div className="flex-[1]  flex flex-col justify-between w-full  ">
+        <div className="flex flex-col items-center   ">
           {/* heading */}
           <img src={appLogo} alt="" className="w-[120px]" />
           <h1 className="font-bold">GSM</h1>
           {/* tabs */}
-          <div className="flex flex-col mt-4 ">
-            <Button color="darkGreen" variant="contained" sx={{minWidth:"100%"}}  >Dashboard</Button>
+          <div className="flex flex-col mt-4  w-full gap-1">
+            {/* loop the childrens of the main layout  */}
+            {routesConfig[1].children.map((route,k) => (
+
+              <Button key={k} LinkComponent={Link} to={route.path} color="darkGreen" variant={location == route.path ? "contained" : "text"} sx={{minWidth:"100%"}}  >{route.name}</Button>
+
+            ))}
+
           </div>
 
         </div>
