@@ -1,0 +1,6 @@
+- react router dom
+- redux - reduxjs/toolkit
+- axios
+- mui / mui x
+- tailwindcss
+- sqlite-electron

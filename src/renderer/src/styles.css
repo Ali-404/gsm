@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --color-normal-green: #8FDFA5;
+  --color-dark-green: #253239;
+  --color-white: #F9FFFB;
+  --color-light-green: #E6FDEC;
+  --color-error: #9F1538;
+
+}
+
