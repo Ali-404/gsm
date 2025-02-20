@@ -14,7 +14,7 @@ export default function Table() {
     const totalMedicines = 102
 
     return (
-        <div className="p-4 bg-normal-green rounded-[25px] shadow-lg">
+        <div className="p-4 bg-normal-green rounded-[25px] shadow-lg  ">
             {/* Header Section */}
             <div className="text-normal-green-contrastText text-center p-4 rounded-[25px] ">
                 <h1 className="text-3xl font-bold">{totalMedicines}</h1>

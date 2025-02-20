@@ -4,13 +4,13 @@ import appLogo from './assets/gsm.png'
 import { routesConfig } from './routes/routes'
 export default function App() {
     return (
-        <div className="flex h-screen bg-light-green gap-4">
+        <div className="flex h-screen bg-light-green gap-4 overflow-hidden">
             {/* side nav */}
 
             <SideNav />
 
             {/* main container */}
-            <div className="h-screen flex-1  flex flex-col p-4">
+            <div className="h-screen flex-1  flex flex-col p-4 overflow-auto">
                 {/* top nav */}
                 <nav className="md:py-4 py-2 bg-normal-green rounded-[25px] text-center mb-4">
                     TITLE
@@ -29,7 +29,7 @@ const SideNav = () => {
     const location = useLocation().pathname
 
     return (
-        <section className="p-4 h-full flex flex-col items-center text-center gap-12 flex-[0.15] lg:flex-[0.25] md:flex-[0.2] max-w-[300px] bg-normal-green rounded-[25px] rounded-tl-none rounded-bl-none">
+        <section className="p-4 h-screen flex flex-col items-center text-center gap-12 flex-[0.15] lg:flex-[0.25] md:flex-[0.2] max-w-[300px] bg-normal-green rounded-[25px] rounded-tl-none rounded-bl-none">
             {/* sidenav top */}
             <div className="flex-[1]  flex flex-col justify-between w-full  ">
                 <div className="flex flex-col items-center   ">

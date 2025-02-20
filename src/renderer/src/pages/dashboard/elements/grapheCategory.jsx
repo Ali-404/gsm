@@ -1,5 +1,4 @@
-import React from 'react'
-import { PieChart, Pie, Cell } from 'recharts'
+import { PieChart } from '@mui/x-charts'
 
 export default function GrapheCategory() {
     const data = [
@@ -11,7 +10,7 @@ export default function GrapheCategory() {
         <div className="flex items-center bg-normal-green p-4 rounded-[25px] shadow-lg gap-4">
             <div className="flex-1 flex justify-center items-center flex-col">
                 {/* Bigger Title */}
-                <h1 className="text-3xl font-bold mb-5">Distribution de Category</h1>
+                <h1 className="text-3xl font-bold mb-5">Consomation par Categories</h1>
 
                 {data.map((item) => (
                     <table key={item.name} className="flex w-full align-middle justify-between">
@@ -30,21 +29,18 @@ export default function GrapheCategory() {
 
             {/* Right Side - Chart */}
             <div className="flex-1 flex justify-center">
-                <PieChart width={180} height={180}>
-                    <Pie
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={50}
-                        outerRadius={70}
-                        paddingAngle={5}
-                        dataKey="value"
-                    >
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Pie>
-                </PieChart>
+            <PieChart
+                series={[
+                  {
+                    data: data,
+
+                  },
+
+                ]}
+                width={400}
+                height={200}
+
+              />
             </div>
         </div>
     )
