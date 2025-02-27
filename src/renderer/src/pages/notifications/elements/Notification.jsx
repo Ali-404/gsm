@@ -1,4 +1,4 @@
-import React from 'react'
+/* eslint-disable react/prop-types */
 
 export default function Notification({ time, date, title, message }) {
     const formattedDate = formatDate(date)
