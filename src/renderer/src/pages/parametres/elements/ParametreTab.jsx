@@ -3,14 +3,14 @@ import { FaBell } from "react-icons/fa"
 import { FcDataBackup } from "react-icons/fc"
 
 const tabClass = "bg-light-green text-dark-green rounded-xl p-2  flex items-center "
-
+const btnClass = "cursor-pointer hover:bg-normal-green"
 // eslint-disable-next-line react/prop-types
 export default function ParametreTab({leadingIcon = null,title,rightElement,onClick = null}) {
 
 
 
   return (
-    <div className={`${tabClass}  justify-between `}>
+    <div className={`${tabClass}  justify-between ${onClick && btnClass}`} onClick={onClick}>
 
       <div className="flex items-center gap-2">
       {leadingIcon && <Icon>{leadingIcon}</Icon>}
@@ -35,7 +35,7 @@ export  function ParametreRecuperationNotifs() {
 export function ParametreBackupTime(){
   return (
     <div>
-      <ParametreTab leadingIcon={<FcDataBackup />} title={"Sauvgardage sur le cloud"} rightElement={<Switch color="success"  />} />
+      <ParametreTab  leadingIcon={<FcDataBackup />} title={"Sauvgardage sur le cloud"} rightElement={<Switch color="success"  />} />
     </div>
   )
 }

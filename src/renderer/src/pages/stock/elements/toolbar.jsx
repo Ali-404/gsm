@@ -9,7 +9,7 @@ export default function Toolbar() {
     const PlusIcon = <img src={Plus} alt="Plus" className="h-6 w-6" />
 
     return (
-        <div className="flex w-full items- justify-between p-4 bg-normal-green rounded-[25px] shadow-lg">
+        <div className="flex w-full items- justify-between p-4 bg-normal-green rounded-t-[25px] shadow-lg">
             {/* Filter Button */}
             <button className="bg-dark-green rounded-2xl p-2 mr-2 transition-transform duration-300 ease-in-out transform hover:scale-110 cursor-pointer">
                 {Filter}
