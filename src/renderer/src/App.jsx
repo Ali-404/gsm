@@ -3,6 +3,10 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 import appLogo from './assets/gsm.png'
 import { routesConfig } from './routes/routes'
 export default function App() {
+  let pathname = useLocation().pathname.replace("/", "").toUpperCase()
+  if (pathname == ""){
+    pathname = "TABEALU DE BOARD"
+  }
     return (
         <div className="flex h-screen bg-light-green gap-4 overflow-hidden">
             {/* side nav */}
@@ -13,7 +17,7 @@ export default function App() {
             <div className="h-screen flex-1  flex flex-col p-4 overflow-auto">
                 {/* top nav */}
                 <nav className="md:py-4 py-2 bg-normal-green rounded-[25px] text-center mb-4">
-                    TITLE
+                    {pathname}
                 </nav>
 
                 {/* container */}
