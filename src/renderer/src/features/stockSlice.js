@@ -32,8 +32,8 @@ const stockSlice = createSlice({
 
 export const fetchStock = createAsyncThunk("stock/fetchStock", async (_,thunk) => {
   try {
-    const medics = await sql("all", "SELECT * FROM medicaments")
-    const categories = await sql("all", "SELECT * FROM categories")
+    const medics = await sql( "SELECT * FROM medicaments")
+    const categories = await sql( "SELECT * FROM categories")
     return {
       medics,
       categories

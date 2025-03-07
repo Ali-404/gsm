@@ -1,79 +1,62 @@
-import { app, shell, BrowserWindow ,screen, ipcMain} from 'electron'
-import  { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import { app, shell, BrowserWindow, screen, ipcMain } from "electron";
+import { join } from "path";
+import { electronApp, optimizer, is } from "@electron-toolkit/utils";
+import icon from "../../resources/icon.png?asset";
+import Database from "better-sqlite3"; // Import better-sqlite3
 
-
-
+let db;
 
 function createWindow() {
-  // Create the main window window.
   const mainWindow = new BrowserWindow({
     width: Math.floor(screen.getPrimaryDisplay().workAreaSize.width * 0.8),
     height: Math.floor(screen.getPrimaryDisplay().workAreaSize.height * 0.8),
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
-  })
+      preload: join(__dirname, "../preload/index.js"),
+      sandbox: false,
+    },
+  });
 
-  mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
-  })
+  mainWindow.on("ready-to-show", () => {
+    mainWindow.show();
+  });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url)
-    return { action: 'deny' }
-  })
+    shell.openExternal(details.url);
+    return { action: "deny" };
+  });
 
-
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+  if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
+    mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
 }
 
-
 app.whenReady().then(async () => {
-  // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId("com.electron");
 
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
+  app.on("browser-window-created", (_, window) => {
+    optimizer.watchWindowShortcuts(window);
+  });
 
-  //initialize db
+  // Initialize the database
   await initDB();
 
+  createWindow();
 
-  createWindow()
+  app.on("activate", function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+});
 
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
-
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
   }
-})
-
-
-
-// db
-const sqlite = require("sqlite");
-const sqlite3 = require("sqlite3");
-
-let db;
+});
 
 // Function to initialize the database
 async function initDB() {
@@ -81,18 +64,12 @@ async function initDB() {
     ? join(__dirname, "database.db") // Development
     : join(app.getPath("userData"), "database.db"); // Production
 
-  db = await sqlite.open({
-    filename: dbPath,
-    driver: sqlite3.Database,
-  });
-
-
+  db = new Database(dbPath); // Initialize better-sqlite3 database
 
   console.log("Database initialized at:", dbPath);
 
   // Create tables if not exist
-
-  await db.exec(`
+  db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       email TEXT,
@@ -109,7 +86,7 @@ async function initDB() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       source TEXT,
-      stock int DEFAULT 0,
+      stock INT DEFAULT 0,
       categorie_id INTEGER,
       FOREIGN KEY (categorie_id) REFERENCES categories(id)
     );
@@ -123,20 +100,13 @@ async function initDB() {
       cleared INTEGER DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
-
-
   `);
 
-
-  // register handler
+  // Register handler for IPC communication
   ipcMain.handle("db", async (event, sql, ...params) => {
     if (!db) {
       throw new Error("Database not initialized");
     }
-    return db[sql](...params);
+    return db.prepare(sql).run(...params);
   });
 }
-
-
-
-

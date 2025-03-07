@@ -4,7 +4,7 @@ import LoadingPage from '../../../sharedComponents/LoadingPage'
 import { useEffect, useState } from 'react'
 
 export default function GrapheCategory() {
-  const {loading, categories, error, medics} = useSelector(state => state.stock)
+  const {loading, categories, medics} = useSelector(state => state.stock)
   const [data, setData] = useState([])
 
   useEffect(() => {
