@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter } from 'react-router-dom'
 import App from '../App'
 import Dashboard from '../pages/dashboard/Dashboard'
 import Stock from '../pages/stock/stock'
@@ -40,4 +40,4 @@ export const routesConfig = [
     }
 ]
 
-export default createBrowserRouter(routesConfig)
+export default createHashRouter(routesConfig)

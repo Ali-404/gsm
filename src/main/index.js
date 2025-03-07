@@ -4,7 +4,36 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
 import Database from "better-sqlite3"; // Import better-sqlite3
 
+let splashScreen;
+
 let db;
+
+
+function createSplashScreen(){
+  splashScreen = new BrowserWindow({
+    width: 650,
+    height: 400,
+    frame: false,
+
+    transparent: true,
+    show: true,
+    alwaysOnTop: true,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  })
+
+
+  const splashPath = join( __dirname, "../renderer/splash/index.html");
+  console.log("Loading splash screen from:", splashPath);
+
+  if (is.dev ){
+    splashScreen.loadURL("http://localhost:5173/splash/index.html")
+  }else {
+    splashScreen.loadFile(splashPath)
+  }
+}
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -20,7 +49,12 @@ function createWindow() {
   });
 
   mainWindow.on("ready-to-show", () => {
+
     mainWindow.show();
+    if (splashScreen) {
+      splashScreen.destroy();
+    }
+
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -42,14 +76,20 @@ app.whenReady().then(async () => {
     optimizer.watchWindowShortcuts(window);
   });
 
+  createSplashScreen();
   // Initialize the database
-  await initDB();
+  await initDB().then(() => {
 
-  createWindow();
+    setTimeout(function () {
+      createWindow();
 
-  app.on("activate", function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
+      app.on("activate", function () {
+        if (BrowserWindow.getAllWindows().length === 0) createWindow();
+      });
+    }, 3000)
+
+  })
+
 });
 
 app.on("window-all-closed", () => {
