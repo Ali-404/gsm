@@ -2,7 +2,23 @@ import { Button } from '@mui/material'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import appLogo from './assets/gsm.png'
 import { routesConfig } from './routes/routes'
+import { useEffect } from 'react'
+import { fetchStock } from './features/stockSlice'
+import { useDispatch } from 'react-redux'
 export default function App() {
+
+  const dispatch = useDispatch()
+
+  useEffect(()=> {
+    // fetch stock
+      dispatch(fetchStock())
+
+
+
+  }, [dispatch])
+
+
+
   let pathname = useLocation().pathname.replace("/", "").toUpperCase()
   if (pathname == ""){
     pathname = "TABEALU DE BOARD"

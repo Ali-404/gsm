@@ -1,11 +1,41 @@
 import { PieChart } from '@mui/x-charts'
+import { useSelector } from 'react-redux'
+import LoadingPage from '../../../sharedComponents/LoadingPage'
+import { useEffect, useState } from 'react'
 
 export default function GrapheCategory() {
-    const data = [
-        { name: 'Analgésiques', value: 19.01, color: '#8FDFA5' },
-        { name: 'Antibiotiques', value: 35.95, color: '#253239' },
-        { name: 'Hypotenseurs', value: 45.04, color: '#E6FDEC' }
-    ]
+  const {loading, categories, error, medics} = useSelector(state => state.stock)
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    if (categories && categories.length > 0){
+      const data = categories.map((category) => {
+        const total = medics.reduce((acc, med) => {
+          if (med.categorie_id === category.id)
+            return acc + med.stock
+          return acc
+        }, 0)
+        return {
+          name: category.name,
+          value: total,
+          color: "#"+((1<<24)*Math.random()|0).toString(16)
+        }
+      })
+      setData(data)
+    }
+  }, [medics, categories])
+
+  if (loading)
+    return <LoadingPage />
+
+
+
+
+    // const data = [
+    //     { name: 'Analgésiques', value: 19.01, color: '#8FDFA5' },
+    //     { name: 'Antibiotiques', value: 35.95, color: '#253239' },
+    //     { name: 'Hypotenseurs', value: 45.04, color: '#E6FDEC' }
+    // ]
     return (
         <div className="flex items-center bg-normal-green p-4 rounded-[25px] shadow-lg gap-4">
             <div className="flex-1 flex justify-center items-center flex-col">

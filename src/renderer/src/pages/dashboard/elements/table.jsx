@@ -1,23 +1,23 @@
+import { useSelector } from "react-redux"
+import LoadingPage from "../../../sharedComponents/LoadingPage"
+import { getCategoryName } from "../../../features/stockSlice";
 
 export default function Table() {
-    const medicines = [
-        { name: 'Med 1', stock: 12, category: 'Analgésiques' },
-        { name: 'Med 2', stock: 32, category: 'Antibiotiques' },
-        { name: 'Med 3', stock: 34, category: 'Hypotenseurs' },
-        { name: 'Med 4', stock: 13, category: 'Analgésiques' },
-        { name: 'Med 5', stock: 55, category: 'Antibiotiques' },
-        { name: 'Med 6', stock: 75, category: 'Hypotenseurs' },
-        { name: 'Med 7', stock: 21, category: 'Analgésiques' }
-    ]
 
-    const totalMedicines = 102
+    const {loading, error, medics,categories}  = useSelector(state => state.stock)
+
+    if (loading)
+      return <LoadingPage />
+    if (error)
+      return <div className="text-red-500 text-center">Error: {error}</div>
+
 
     return (
-        <div className="p-4 bg-normal-green rounded-[25px] shadow-lg  ">
+        <div className="p-4 bg-normal-green rounded-[25px] shadow-lg  min-h-[80vh]">
             {/* Header Section */}
             <div className="text-normal-green-contrastText text-center p-4 rounded-[25px] ">
-                <h1 className="text-3xl font-bold">{totalMedicines}</h1>
                 <h1 className="text-3xl font-bold">TOTAL MEDICAMENTS</h1>
+                <h1 className="text-3xl font-bold">{medics?.length ?? 0}</h1>
             </div>
 
             {/* Table Section */}
@@ -31,14 +31,14 @@ export default function Table() {
                         </tr>
                     </thead>
                     <tbody>
-                        {medicines.map((med, index) => (
+                        {medics.length > 0 && medics.slice(0,10).map((med, index) => (
                             <tr
                                 key={index}
                                 className="text-light-green border-b border-dark-green-contrastText"
                             >
                                 <td className="p-2">{med.name}</td>
                                 <td className="p-2">{med.stock}</td>
-                                <td className="p-2">{med.category}</td>
+                                <td className="p-2">{getCategoryName(categories, med.categorie_id)}</td>
                             </tr>
                         ))}
                     </tbody>
