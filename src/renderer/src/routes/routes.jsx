@@ -4,11 +4,12 @@ import Dashboard from '../pages/dashboard/Dashboard'
 import Stock from '../pages/stock/stock'
 import Parametres from '../pages/parametres/parametres'
 import Notifications from '../pages/notifications/notifications'
+import Login from '../pages/login/Login'
 
 export const routesConfig = [
     {
         path: '/login',
-        element: <div>Login</div>
+        element: <Login />
     },
 
     {
