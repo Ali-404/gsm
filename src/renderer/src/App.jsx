@@ -74,7 +74,12 @@ const SideNav = () => {
                     </div>
                 </div>
 
-                <Button size="medium" variant="contained" color="error">
+                <Button 
+                    size="medium" 
+                    variant="contained" 
+                    color="error"
+                    LinkComponent={Link}
+                    to={routesConfig[0].path}>
                     DECONNEXION
                 </Button>
             </div>

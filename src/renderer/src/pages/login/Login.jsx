@@ -17,7 +17,7 @@ export default function Login() {
   return (
     <div className="h-screen flex flex-row bg-light-green">
 
-      <div className="flex-[0.5] rounded-[25px] rounded-bl-none rounded-tl-none flex flex-col items-center py-5 gap-[22vh] px-6 bg-normal-green">
+      <div className="flex-[0.5] rounded-[25px] rounded-bl-none rounded-tl-none flex flex-col items-center py-5 gap-[110px] px-6 bg-normal-green">
           <img src={appLogo} alt="Logo" className='w-[100px] md:w-[110px] lg:w-[120px] xl:w-[130px] self-start' />
           <img src={image} alt="image" className='w-[500px]' />
           <h2 className='mb-7 text-center md:text-xl'>Connectez-vous a votre <br /> compte</h2>
